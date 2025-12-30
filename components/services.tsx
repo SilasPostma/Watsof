@@ -9,7 +9,7 @@ const services = [
   },
   {
     icon: Bot,
-    title: "ai agents",
+    title: "smart automations",
     description: "intelligent automation tailored to your workflows and business logic.",
   },
   {

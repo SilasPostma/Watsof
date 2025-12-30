@@ -11,7 +11,7 @@ const _spaceGrotesk = Space_Grotesk({ subsets: ["latin"] })
 export const metadata: Metadata = {
   title: "watsof — Personalized Tech Solutions",
   description:
-    "Navigate the complexity of modern technology with personalized websites, AI agents, and digital solutions crafted for your business.",
+    "Navigate the complexity of modern technology with personalized websites, smart automations, and digital solutions crafted for your business.",
   generator: "v0.app",
   icons: {
     icon: [
