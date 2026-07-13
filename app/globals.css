@@ -125,3 +125,39 @@
     @apply bg-background text-foreground;
   }
 }
+
+.animated-blob {
+  filter: blur(90px);
+  opacity: 0.35;
+  transform: translate(-50%, -50%);
+  animation-name: blob-drift;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  will-change: transform;
+}
+
+.dark .animated-blob {
+  opacity: 0.45;
+}
+
+@keyframes blob-drift {
+  0%,
+  100% {
+    transform: translate(-50%, -50%) translate(0, 0) scale(1);
+  }
+  25% {
+    transform: translate(-50%, -50%) translate(var(--tx1), var(--ty1)) scale(1.08);
+  }
+  50% {
+    transform: translate(-50%, -50%) translate(var(--tx2), var(--ty2)) scale(0.94);
+  }
+  75% {
+    transform: translate(-50%, -50%) translate(var(--tx3), var(--ty3)) scale(1.04);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animated-blob {
+    animation: none;
+  }
+}
