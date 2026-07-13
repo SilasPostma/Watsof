@@ -1,10 +1,8 @@
 import type { NextConfig } from "next";
 
-const isGithubPages = process.env.NODE_ENV === "production";
-
+// Served from the watsof.net custom domain root (see CNAME), so no basePath is needed.
 const nextConfig: NextConfig = {
-  basePath: isGithubPages ? "/Watsof" : "",
-  assetPrefix: isGithubPages ? "/Watsof/" : "",
+  output: "export",
 };
 
 export default nextConfig;
