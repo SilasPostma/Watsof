@@ -1,8 +1,8 @@
 import type { NextConfig } from "next";
 
 // Served from the watsof.net custom domain root (see CNAME), so no basePath is needed.
-// trailingSlash ensures multi-page routes export as e.g. work/index.html rather than
-// work.html, which resolves reliably on GitHub Pages for both /work and /work/.
+// trailingSlash ensures any future route exports as route/index.html rather than
+// route.html, which resolves reliably on GitHub Pages for both /route and /route/.
 const nextConfig: NextConfig = {
   output: "export",
   trailingSlash: true,

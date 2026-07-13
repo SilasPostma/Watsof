@@ -38,7 +38,7 @@ export function Footer() {
       </div>
 
       <div className="border-t border-border">
-        <div className="container mx-auto px-6 py-8">
+        <div className="container mx-auto px-6 py-8 space-y-3">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-muted-foreground">
             <p>© {new Date().getFullYear()} watsof. all rights reserved.</p>
             <div className="flex items-center gap-6">
@@ -56,6 +56,10 @@ export function Footer() {
               </a>
             </div>
           </div>
+          <p className="text-center md:text-left text-xs text-muted-foreground/70">
+            the name is borrowed from Caspar David Friedrich&apos;s{" "}
+            <em>Wanderer above the Sea of Fog</em>.
+          </p>
         </div>
       </div>
     </footer>

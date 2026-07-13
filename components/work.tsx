@@ -30,12 +30,12 @@ const projects = [
 
 export function Work() {
   return (
-    <section className="pt-32 pb-20 px-6">
+    <section id="portfolio" className="py-20 px-6">
       <div className="container mx-auto max-w-5xl">
         <div className="text-center space-y-4 mb-16">
-          <h1 className="text-4xl md:text-6xl font-medium tracking-tight text-balance">
+          <h2 className="text-3xl md:text-5xl font-medium tracking-tight text-balance">
             Selected Work
-          </h1>
+          </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto text-pretty leading-relaxed">
             a few of the projects we&apos;ve built.
           </p>
@@ -59,7 +59,7 @@ export function Work() {
                     <ArrowUpRight className="h-5 w-5 text-muted-foreground transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-primary" />
                   </div>
                   <div className="space-y-1">
-                    <h2 className="text-xl font-medium">{project.name}</h2>
+                    <h3 className="text-xl font-medium">{project.name}</h3>
                     <p className="text-sm text-muted-foreground">{project.domain}</p>
                   </div>
                   <span className="inline-block text-xs font-medium text-primary bg-primary/10 rounded-full px-3 py-1">

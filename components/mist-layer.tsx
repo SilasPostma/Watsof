@@ -2,12 +2,13 @@
 
 import { useEffect, useRef, useState } from "react"
 
-type Blob = {
+type Wisp = {
   id: number
   hue: number
   chroma: number
   lightness: number
-  size: number
+  width: number
+  height: number
   top: number
   left: number
   duration: number
@@ -21,8 +22,8 @@ type Blob = {
   ty3: number
 }
 
-// Curated hues so random picks always look intentional: brand teal, violet, coral, sage.
-const HUES = [200, 300, 30, 150]
+// Curated hues drawn from the fog palette: dawn gold, pale mist blue, slate blue-grey, dusk blue.
+const HUES = [75, 215, 235, 250]
 
 const RESET_INTERVAL_MS = 15 * 60 * 1000
 const PARALLAX_MAX_PX = 28
@@ -31,7 +32,7 @@ function rand(min: number, max: number) {
   return min + Math.random() * (max - min)
 }
 
-function createBlobs(): Blob[] {
+function createWisps(): Wisp[] {
   const positions = [
     { top: rand(0, 30), left: rand(0, 30) },
     { top: rand(0, 30), left: rand(70, 100) },
@@ -39,40 +40,44 @@ function createBlobs(): Blob[] {
     { top: rand(70, 100), left: rand(70, 100) },
   ]
 
-  return HUES.map((hue, i) => ({
-    id: Date.now() + i,
-    hue,
-    chroma: rand(0.12, 0.17),
-    lightness: rand(0.68, 0.78),
-    size: rand(32, 52),
-    top: positions[i].top,
-    left: positions[i].left,
-    duration: rand(22, 34),
-    delay: rand(-20, 0),
-    depth: rand(0.5, 1.4),
-    tx1: rand(-10, 10),
-    ty1: rand(-10, 10),
-    tx2: rand(-10, 10),
-    ty2: rand(-10, 10),
-    tx3: rand(-10, 10),
-    ty3: rand(-10, 10),
-  }))
+  return HUES.map((hue, i) => {
+    const width = rand(42, 66)
+    return {
+      id: Date.now() + i,
+      hue,
+      chroma: rand(0.03, 0.08),
+      lightness: rand(0.55, 0.78),
+      width,
+      height: width * rand(0.45, 0.7),
+      top: positions[i].top,
+      left: positions[i].left,
+      duration: rand(26, 40),
+      delay: rand(-20, 0),
+      depth: rand(0.5, 1.4),
+      tx1: rand(-8, 8),
+      ty1: rand(-6, 6),
+      tx2: rand(-8, 8),
+      ty2: rand(-6, 6),
+      tx3: rand(-8, 8),
+      ty3: rand(-6, 6),
+    }
+  })
 }
 
-export function AnimatedBackground() {
-  const [blobs, setBlobs] = useState<Blob[] | null>(null)
+export function MistLayer() {
+  const [wisps, setWisps] = useState<Wisp[] | null>(null)
   const [reducedMotion, setReducedMotion] = useState(false)
   const wrapperRefs = useRef<(HTMLDivElement | null)[]>([])
 
   useEffect(() => {
-    setBlobs(createBlobs())
+    setWisps(createWisps())
 
     const media = window.matchMedia("(prefers-reduced-motion: reduce)")
     setReducedMotion(media.matches)
     const onChange = () => setReducedMotion(media.matches)
     media.addEventListener("change", onChange)
 
-    const interval = setInterval(() => setBlobs(createBlobs()), RESET_INTERVAL_MS)
+    const interval = setInterval(() => setWisps(createWisps()), RESET_INTERVAL_MS)
 
     return () => {
       media.removeEventListener("change", onChange)
@@ -80,9 +85,9 @@ export function AnimatedBackground() {
     }
   }, [])
 
-  // Subtle parallax: blobs drift toward the pointer (fine-pointer devices) or with
-  // scroll position (touch devices, which have no cursor to react to), each blob at
-  // its own depth for an actual sense of depth rather than uniform jitter.
+  // Subtle parallax: wisps drift toward the pointer (fine-pointer devices) or with
+  // scroll position (touch devices, which have no cursor to react to), each at its
+  // own depth — like layers of fog receding at different distances.
   useEffect(() => {
     if (reducedMotion) return
 
@@ -97,7 +102,7 @@ export function AnimatedBackground() {
 
       wrapperRefs.current.forEach((el, i) => {
         if (!el) return
-        const depth = blobs?.[i]?.depth ?? 1
+        const depth = wisps?.[i]?.depth ?? 1
         const px = current.x * PARALLAX_MAX_PX * depth
         const py = current.y * PARALLAX_MAX_PX * depth
         el.style.transform = `translate3d(${px}px, ${py}px, 0)`
@@ -137,18 +142,18 @@ export function AnimatedBackground() {
       window.removeEventListener("scroll", onScroll)
       cancelAnimationFrame(raf)
     }
-  }, [reducedMotion, blobs])
+  }, [reducedMotion, wisps])
 
-  if (!blobs) return null
+  if (!wisps) return null
 
   return (
     <div
       aria-hidden
       className="fixed inset-0 -z-10 overflow-hidden pointer-events-none"
     >
-      {blobs.map((blob, i) => (
+      {wisps.map((wisp, i) => (
         <div
-          key={blob.id}
+          key={wisp.id}
           ref={(el) => {
             wrapperRefs.current[i] = el
           }}
@@ -159,20 +164,20 @@ export function AnimatedBackground() {
             className="animated-blob absolute rounded-full"
             style={
               {
-                top: `${blob.top}%`,
-                left: `${blob.left}%`,
-                width: `${blob.size}vw`,
-                height: `${blob.size}vw`,
-                background: `oklch(${blob.lightness} ${blob.chroma} ${blob.hue})`,
-                animationDuration: reducedMotion ? undefined : `${blob.duration}s`,
-                animationDelay: reducedMotion ? undefined : `${blob.delay}s`,
+                top: `${wisp.top}%`,
+                left: `${wisp.left}%`,
+                width: `${wisp.width}vw`,
+                height: `${wisp.height}vw`,
+                background: `oklch(${wisp.lightness} ${wisp.chroma} ${wisp.hue})`,
+                animationDuration: reducedMotion ? undefined : `${wisp.duration}s`,
+                animationDelay: reducedMotion ? undefined : `${wisp.delay}s`,
                 animationPlayState: reducedMotion ? "paused" : "running",
-                "--tx1": `${blob.tx1}vw`,
-                "--ty1": `${blob.ty1}vh`,
-                "--tx2": `${blob.tx2}vw`,
-                "--ty2": `${blob.ty2}vh`,
-                "--tx3": `${blob.tx3}vw`,
-                "--ty3": `${blob.ty3}vh`,
+                "--tx1": `${wisp.tx1}vw`,
+                "--ty1": `${wisp.ty1}vh`,
+                "--tx2": `${wisp.tx2}vw`,
+                "--ty2": `${wisp.ty2}vh`,
+                "--tx3": `${wisp.tx3}vw`,
+                "--ty3": `${wisp.ty3}vh`,
               } as React.CSSProperties
             }
           />
