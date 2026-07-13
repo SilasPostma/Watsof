@@ -94,6 +94,11 @@ To extend this palette for a new site: pick one hue, keep chroma low (~0.12–0.
 - Regenerates (new random positions/colors) every 15 minutes on a `setInterval`, and once fresh on every page load — never server-rendered (state starts `null`, populated in `useEffect`) to avoid a hydration mismatch from `Math.random()`.
 - Respects `prefers-reduced-motion: reduce` — animation is fully disabled, blobs render static.
 - Rendered once in `app/layout.tsx`, `fixed inset-0 -z-10 pointer-events-none`, as the first child of `<body>` — this is what requires every section above it to be non-opaque/untinted, per the Layout Conventions note above.
+- **Cursor parallax**: on fine-pointer devices (`matchMedia("(pointer: fine)")`, skipped on touch and on `prefers-reduced-motion`), each blob sits in its own wrapper `<div>` whose `transform` is driven imperatively (via `requestAnimationFrame`, writing `el.style.transform` directly — not React state) toward an eased cursor-relative offset, capped at `PARALLAX_MAX_PX` (28px) and scaled by a random per-blob `depth` (0.5–1.4) so blobs drift at different rates for an actual depth effect. This layers on top of, and is independent from, the `blob-drift` keyframe animation on the inner element.
+
+## Contrast note
+
+`--muted-foreground` in dark mode is `oklch(0.74 0 0)`, deliberately lighter than a "normal" gray-on-black pairing would need — because in this design muted text often sits over the animated blob layer, not flat background, and the extra headroom keeps it readable against a lit blob without needing per-instance overrides.
 
 ## Checklist for a new page/site in this style
 
