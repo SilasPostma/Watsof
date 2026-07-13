@@ -29,10 +29,10 @@ export function Header() {
                 Approach
               </a>
               <a
-                href="/work/"
+                href="/#portfolio"
                 className="text-sm text-muted-foreground hover:text-foreground transition-colors"
               >
-                Work
+                Portfolio
               </a>
               <a
                 href="/#contact"

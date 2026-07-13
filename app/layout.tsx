@@ -2,7 +2,7 @@ import type React from "react"
 import type { Metadata } from "next"
 import { Geist, Geist_Mono, Space_Grotesk, Instrument_Serif } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
-import { AnimatedBackground } from "@/components/animated-background"
+import { MistLayer } from "@/components/mist-layer"
 import { ThemeProvider } from "@/components/theme-provider"
 import "./globals.css"
 
@@ -34,8 +34,11 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} ${spaceGrotesk.variable} ${instrumentSerif.variable} font-sans antialiased`}
       >
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <AnimatedBackground />
-          {children}
+          <div className="relative">
+            <div aria-hidden className="fog-gradient absolute inset-0 -z-20" />
+            <MistLayer />
+            {children}
+          </div>
           <Analytics />
         </ThemeProvider>
       </body>
