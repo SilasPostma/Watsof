@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 
 export function Footer() {
   return (
-    <footer id="contact" className="border-t border-border bg-muted/30">
+    <footer id="contact" className="border-t border-border">
       <div className="container mx-auto px-6 py-16">
         <div className="max-w-4xl mx-auto text-center space-y-8">
           <h2 className="text-3xl md:text-5xl font-medium tracking-tight text-balance">
