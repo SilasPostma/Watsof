@@ -8,7 +8,9 @@ export function Header() {
       <nav className="container mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-12">
-            <a href="/" className="flex items-center gap-3">
+            <a href="/" className="flex items-center gap-2">
+              {/* favicon.ico is a white mark on transparent — invert it for the light-mode header */}
+              <img src="/favicon.ico" alt="" className="h-6 w-auto invert dark:invert-0" />
               <span className="text-xl font-display font-medium tracking-tight">
                 watsof
               </span>

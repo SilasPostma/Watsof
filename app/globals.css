@@ -134,6 +134,7 @@
   animation-timing-function: ease-in-out;
   animation-iteration-count: infinite;
   will-change: transform;
+  backface-visibility: hidden;
 }
 
 .dark .animated-blob {
