@@ -8,19 +8,25 @@ export function Hero() {
         <div className="text-center space-y-8">
           <div className="space-y-4">
             <h1 className="text-5xl md:text-7xl font-medium tracking-tight text-balance leading-tight">
-              Navigate Complexity with Personalized Tech
+              Navigate Complexity with{" "}
+              <span className="font-accent italic text-primary inline-block -rotate-2">
+                personalized
+              </span>{" "}
+              Tech
             </h1>
           </div>
           <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto text-pretty leading-relaxed">
             we craft bespoke websites, intelligent automations, and digital experiences tailored to your vision.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
-            <Button size="lg" className="gap-2">
-              Start Your Journey
-              <ArrowRight className="h-4 w-4" />
+            <Button size="lg" className="gap-2" asChild>
+              <a href="/#contact">
+                Start Your Journey
+                <ArrowRight className="h-4 w-4" />
+              </a>
             </Button>
-            <Button size="lg" variant="outline">
-              View Our Work
+            <Button size="lg" variant="outline" asChild>
+              <a href="/work/">View Our Work</a>
             </Button>
           </div>
         </div>

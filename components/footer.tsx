@@ -40,7 +40,7 @@ export function Footer() {
       <div className="border-t border-border">
         <div className="container mx-auto px-6 py-8">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-muted-foreground">
-            <p>© 2025 watsof. all rights reserved.</p>
+            <p>© {new Date().getFullYear()} watsof. all rights reserved.</p>
             <div className="flex items-center gap-6">
               <a href="#" className="hover:text-foreground transition-colors">
                 privacy

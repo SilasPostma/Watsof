@@ -40,7 +40,7 @@ Dark (same tokens, re-pointed):
 --primary: oklch(0.65 0.15 200)     /* brighter teal for dark bg */
 --primary-foreground: oklch(0.08 0 0)
 --muted: oklch(0.15 0 0)
---muted-foreground: oklch(0.6 0 0)
+--muted-foreground: oklch(0.74 0 0)  /* lighter than a flat-bg pairing needs — see Contrast note */
 --accent: oklch(0.2 0.04 200)
 --border: oklch(0.18 0 0)
 --ring: oklch(0.65 0.15 200)
@@ -58,13 +58,15 @@ To extend this palette for a new site: pick one hue, keep chroma low (~0.12–0.
 - Headings: `font-medium` (not bold), `tracking-tight`, large sizes (`text-5xl md:text-7xl` for H1, `text-3xl md:text-5xl` for H2), always paired with `text-balance`
 - Body copy: `text-muted-foreground`, `leading-relaxed`, paired with `text-pretty`
 - **Voice quirk**: headings are written in normal sentence/title case ("Navigate Complexity with Personalized Tech"), but supporting paragraph copy and nav labels are intentionally **lowercase** ("we craft bespoke websites...", "watsof"). Keep this contrast — it's a deliberate, slightly understated brand tic, not an inconsistency to "fix".
+- **Accent word** (`--font-accent`, Instrument Serif italic): exactly one word per hero-level headline is set in this font — italic, `text-primary`, `inline-block -rotate-2` for a hand-picked, "a person made this" feel against the otherwise clean geometric sans. This is deliberately rare — use it once per page, on the single word that carries the brand's differentiator (e.g. "personalized" in the homepage H1), not as a general emphasis style. Overusing it defeats the point.
 
 ## Layout conventions
 
 - Every section: `<section className="py-20 px-6">` wrapping `<div className="container mx-auto max-w-5xl">` (hero) or `max-w-6xl` (grid sections)
 - Sections do **not** set their own background color/tint. The whole page shares one continuous background (solid token color + the animated blob layer, see below) — a section-level `bg-muted/30` or similar creates a visible horizontal seam where the tint starts/stops against the blurred background. If a section needs visual separation, use a `border-t border-border` (see Footer), not a background fill.
 - Cards (`bg-card`, opaque) are the one place a solid fill is fine, since they're bounded elements, not full-bleed section backgrounds.
-- Section anchors (`id="services"`, `id="approach"`, `id="contact"`) match header nav hrefs (`#services`, etc.) — keep this in sync when adding sections.
+- Section anchors (`id="services"`, `id="approach"`, `id="contact"`) match header nav hrefs — since the header/footer are shared across multiple routes now, anchor links use the absolute form `/#services` (not bare `#services`) so they resolve correctly from any page, not just `/`.
+- **Multi-page routing**: `next.config.ts` sets `trailingSlash: true`. This is required for `output: "export"` on GitHub Pages — without it, Next 16 emits flat files like `work.html` instead of `work/index.html`, which only resolves for the exact URL `/work` and 404s on `/work/`. With it, every route exports as `route/index.html`, which both `/route` and `/route/` resolve on GitHub Pages. Internal links to routes (not same-page hash anchors) must include the trailing slash, e.g. `href="/work/"`.
 
 ## Components
 
@@ -77,6 +79,7 @@ To extend this palette for a new site: pick one hue, keep chroma low (~0.12–0.
 - `fixed top-0 left-0 right-0 z-50`, **fully opaque** `bg-background` (not translucent — a translucent/backdrop-blur header lets scrolled content and the animated background bleed through it, which reads as a bug, not a glass effect)
 - `border-b border-border` plus a soft drop shadow (`shadow-[0_1px_12px_-4px_rgba(0,0,0,0.12)]`) so the flat header still reads as an intentional edge against the blurred, colorful content beneath it, in both themes
 - Theme toggle (`ThemeToggle`, sun/moon via lucide) sits directly left of the primary CTA button
+- Nav links (`hidden md:flex`) collapse below `md` into `MobileNav`: a hamburger (`Menu`/`X` from lucide) that toggles a full-width dropdown panel anchored under the header, styled identically (opaque `bg-background`, same border/shadow). The desktop "Get Started" button is `hidden md:inline-flex` so exactly one of {button, hamburger} is ever visible — don't show both in the same breakpoint range.
 
 ## Dark mode
 

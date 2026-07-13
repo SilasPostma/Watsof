@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { MobileNav } from "@/components/mobile-nav";
 
 export function Header() {
   return (
@@ -14,19 +15,25 @@ export function Header() {
             </a>
             <div className="hidden md:flex items-center gap-8">
               <a
-                href="#services"
+                href="/#services"
                 className="text-sm text-muted-foreground hover:text-foreground transition-colors"
               >
                 Services
               </a>
               <a
-                href="#approach"
+                href="/#approach"
                 className="text-sm text-muted-foreground hover:text-foreground transition-colors"
               >
                 Approach
               </a>
               <a
-                href="#contact"
+                href="/work/"
+                className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+              >
+                Work
+              </a>
+              <a
+                href="/#contact"
                 className="text-sm text-muted-foreground hover:text-foreground transition-colors"
               >
                 Contact
@@ -35,9 +42,10 @@ export function Header() {
           </div>
           <div className="flex items-center gap-2">
             <ThemeToggle />
-            <Button variant="default" size="sm">
-              Get Started
+            <Button variant="default" size="sm" className="hidden md:inline-flex" asChild>
+              <a href="/#contact">Get Started</a>
             </Button>
+            <MobileNav />
           </div>
         </div>
       </nav>
