@@ -80,21 +80,16 @@ export function AnimatedBackground() {
     }
   }, [])
 
-  // Subtle cursor parallax: blobs drift slightly toward the pointer, each at its own depth.
+  // Subtle parallax: blobs drift toward the pointer (fine-pointer devices) or with
+  // scroll position (touch devices, which have no cursor to react to), each blob at
+  // its own depth for an actual sense of depth rather than uniform jitter.
   useEffect(() => {
     if (reducedMotion) return
-    if (!window.matchMedia("(pointer: fine)").matches) return
 
+    const pointerFine = window.matchMedia("(pointer: fine)").matches
     let target = { x: 0, y: 0 }
     let current = { x: 0, y: 0 }
     let raf = 0
-
-    const onPointerMove = (e: PointerEvent) => {
-      target = {
-        x: (e.clientX / window.innerWidth - 0.5) * 2,
-        y: (e.clientY / window.innerHeight - 0.5) * 2,
-      }
-    }
 
     const tick = () => {
       current.x += (target.x - current.x) * 0.04
@@ -105,17 +100,41 @@ export function AnimatedBackground() {
         const depth = blobs?.[i]?.depth ?? 1
         const px = current.x * PARALLAX_MAX_PX * depth
         const py = current.y * PARALLAX_MAX_PX * depth
-        el.style.transform = `translate(${px}px, ${py}px)`
+        el.style.transform = `translate3d(${px}px, ${py}px, 0)`
       })
 
       raf = requestAnimationFrame(tick)
     }
 
-    window.addEventListener("pointermove", onPointerMove, { passive: true })
-    raf = requestAnimationFrame(tick)
+    if (pointerFine) {
+      const onPointerMove = (e: PointerEvent) => {
+        target = {
+          x: (e.clientX / window.innerWidth - 0.5) * 2,
+          y: (e.clientY / window.innerHeight - 0.5) * 2,
+        }
+      }
+      window.addEventListener("pointermove", onPointerMove, { passive: true })
+      raf = requestAnimationFrame(tick)
+      return () => {
+        window.removeEventListener("pointermove", onPointerMove)
+        cancelAnimationFrame(raf)
+      }
+    }
 
+    // Touch devices: bounded oscillation driven by scroll depth, not raw scrollY,
+    // so it stays gentle no matter how long the page is.
+    const onScroll = () => {
+      const s = window.scrollY
+      target = {
+        x: Math.sin(s * 0.0015) * 0.6,
+        y: Math.sin(s * 0.0025),
+      }
+    }
+    onScroll()
+    window.addEventListener("scroll", onScroll, { passive: true })
+    raf = requestAnimationFrame(tick)
     return () => {
-      window.removeEventListener("pointermove", onPointerMove)
+      window.removeEventListener("scroll", onScroll)
       cancelAnimationFrame(raf)
     }
   }, [reducedMotion, blobs])

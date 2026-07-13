@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { MobileNav } from "@/components/mobile-nav";
 
 export function Header() {
   return (
@@ -7,26 +8,34 @@ export function Header() {
       <nav className="container mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-12">
-            <a href="/" className="flex items-center gap-3">
+            <a href="/" className="flex items-center gap-2">
+              {/* favicon.ico is a white mark on transparent — invert it for the light-mode header */}
+              <img src="/favicon.ico" alt="" className="h-6 w-auto invert dark:invert-0" />
               <span className="text-xl font-display font-medium tracking-tight">
                 watsof
               </span>
             </a>
             <div className="hidden md:flex items-center gap-8">
               <a
-                href="#services"
+                href="/#services"
                 className="text-sm text-muted-foreground hover:text-foreground transition-colors"
               >
                 Services
               </a>
               <a
-                href="#approach"
+                href="/#approach"
                 className="text-sm text-muted-foreground hover:text-foreground transition-colors"
               >
                 Approach
               </a>
               <a
-                href="#contact"
+                href="/work/"
+                className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+              >
+                Work
+              </a>
+              <a
+                href="/#contact"
                 className="text-sm text-muted-foreground hover:text-foreground transition-colors"
               >
                 Contact
@@ -35,9 +44,10 @@ export function Header() {
           </div>
           <div className="flex items-center gap-2">
             <ThemeToggle />
-            <Button variant="default" size="sm">
-              Get Started
+            <Button variant="default" size="sm" className="hidden md:inline-flex" asChild>
+              <a href="/#contact">Get Started</a>
             </Button>
+            <MobileNav />
           </div>
         </div>
       </nav>
